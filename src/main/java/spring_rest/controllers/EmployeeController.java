@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import spring_rest.entity.Employees;
+import spring_rest.exception_handler.EmployeeNotFounException;
 import spring_rest.services.ServiceEmp;
 
 import java.util.List;
@@ -24,8 +25,11 @@ public class EmployeeController {
     }
     @GetMapping("/employees/{employeeID}")
     public Employees getById(@PathVariable("employeeID") int employeeID){
-
-        return employeesService.getById(employeeID);
+        Employees employees=employeesService.getById(employeeID);
+        if(employees==null){
+            throw new EmployeeNotFounException("Нет такого рабочего");
+        }
+        return employees;
     }
 
 
